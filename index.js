@@ -2,16 +2,17 @@ var axios = require("axios");
 var fs = require("fs");
 var path = require("path");
 var parseCSV = require("csv-parse/sync");
-var { exportPath, tabsUrl, localesKey } = require("./config");
 
-async function loadCsv() {
-  console.log("IMPORTING LOCALES");
+async function loadCsv(configPath) {
+  var { exportPath, tabsUrl, localesKey } = require(configPath);
+
+  console.log("[+] IMPORTING LOCALES");
   axios.all(tabsUrl.map((urltab) => axios.get(urltab))).then(
     axios.spread((...responses) => {
-      var columns = responses
+      var rows = responses
         .map((response) => getParsedCSV(response.data))
         .flat(1);
-      handleResponse(columns);
+      handleResponse(localesKey, rows, `../../${exportPath}`);
     })
   );
 }
@@ -22,14 +23,14 @@ function getParsedCSV(file) {
   });
 }
 
-function handleResponse(rows) {
+function handleResponse(localesKey, rows, exportPath) {
   localesKey.forEach((localeKey) => {
-    var content = writeTranslation(rows, localeKey);
-    createJson(localeKey, `{\n${content}\n}\n`);
+    var content = writeTranslation(localesKey, rows, localeKey);
+    createJson(exportPath, localeKey, `{\n${content}\n}\n`);
   });
 }
 
-function writeTranslation(rows, locale) {
+function writeTranslation(localesKey, rows, locale) {
   var fallback =
     localesKey[(localesKey.indexOf(locale) + 1) % localesKey.length];
   return rows
@@ -62,7 +63,7 @@ function writeTranslation(rows, locale) {
     .join(",\n");
 }
 
-function createJson(locale, string) {
+function createJson(exportPath, locale, string) {
   fs.writeFile(
     path.resolve(__dirname, `${exportPath}/${locale}.json`),
     string,

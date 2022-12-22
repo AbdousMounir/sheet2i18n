@@ -3,4 +3,10 @@
 
 var sheet2i18n = require("../index");
 
-sheet2i18n();
+var [, , configPath] = process.argv;
+
+if (!configPath) {
+  configPath = "sheet2i18n.config";
+}
+
+sheet2i18n(`../../${configPath}`);

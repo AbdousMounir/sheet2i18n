@@ -1,6 +1,6 @@
 {
   "name": "sheet2i18n",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Import locale from Google Sheet into Json file.",
   "main": "index.js",
   "bin": {
