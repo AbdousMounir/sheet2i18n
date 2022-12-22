@@ -75,4 +75,4 @@ function createJson(locale, string) {
   );
 }
 
-loadCsv();
+module.exports = loadCsv;

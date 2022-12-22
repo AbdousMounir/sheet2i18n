@@ -1,10 +1,17 @@
 {
-  "name": "@nventive/sheet2i18n",
+  "name": "sheet2i18n",
   "version": "1.0.0",
   "description": "Import locale from Google Sheet into Json file.",
   "main": "index.js",
+  "bin": {
+    "sheet2i18n": "./bin/sheet2i18n.js"
+  },
   "scripts": {
-    "start": "node index.js"
+    "start": "node bin/sheet2i18n.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AbdousMounir/sheet2i18n.git"
   },
   "dependencies": {
     "axios": "^1.1.3",
